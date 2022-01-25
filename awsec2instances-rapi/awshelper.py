@@ -8,7 +8,8 @@ import sys
 import boto3
 import botocore
 
-region = 'eu-west-1'    # AWS region
+region = 'us-east-2'  # AWS region
+
 
 def describe_instances():
     """
@@ -19,7 +20,8 @@ def describe_instances():
     # Describe instances
     instances = ec2_resource.instances.all()
     for instance in instances:
-        print('State of the instance "' + instance.id + '" is: "' + instance.state['Name'] + '"')
+        print('State of the instance "' + instance.id + '" is: "' +
+              instance.state['Name'] + '"')
     return
 
 
@@ -27,14 +29,16 @@ def run_instance():
     """
     Run an EC2 instance
     """
-    ami_id        = "ami-785db401"   # AMI Id
-    instance_type = "t2.micro"       # Instance Type
+    ami_id = "ami-785db401"  # AMI Id
+    instance_type = "t2.micro"  # Instance Type
 
     # Instantiate the service resource object
     ec2_resource = boto3.resource('ec2', region_name=region)
     # Run an instance
-    instances = ec2_resource.create_instances(ImageId=ami_id, InstanceType=instance_type,
-                                              MaxCount=1, MinCount=1)
+    instances = ec2_resource.create_instances(ImageId=ami_id,
+                                              InstanceType=instance_type,
+                                              MaxCount=1,
+                                              MinCount=1)
     Instance_id = instances[0].id
     print('\nInstance Id:      ' + Instance_id)
     print('Image Id:         ' + instances[0].image_id)
